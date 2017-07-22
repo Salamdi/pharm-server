@@ -1,3 +1,7 @@
+const path = require('path');
+const fs = require('fs')
+const priceUpdate = require('../parser/priceUpdate');
+
 module.exports = function(app, db) {
 
     // GET an item
@@ -16,5 +20,20 @@ module.exports = function(app, db) {
                 }
             });
     });
+
+    // POST. Update the price
+    app.post('/:shopName', (req, res) => {
+
+        const confObjects = fs.readdirSync(path.resolve(__dirname, '..', 'parser/shops'))
+            .map(fileName => JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', 'parser/shops', `${fileName}`))));
+        const shop = confObjects.find(conf => conf.name === req.params.shopName);
+        if (shop) {
+            priceUpdate(shop, db).then(res.end(`${shop.name} price has been successfully updated`));
+        } else {
+            res.writeHead(404);
+            res.end('shop has not been found');
+        }
+        
+    })
 
 }

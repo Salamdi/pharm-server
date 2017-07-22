@@ -17,13 +17,12 @@ app.use(express.static('../dist'));
 MongoClient.connect(db.url, (err, database) => {
   if (err) throw err;
   Promise.all(parse(database))
-    .then((result) => {
-        console.log(result);
+    .then((results) => {
+        console.log('All prices has been successfully created (updated). Starting the server...');
         require('./app/routes')(app, database);
         app.listen(port, (err) => {
             if (err) throw err;
             console.log('We are live on ' + port);
         });
-    })
-    .catch(err => console.error(err));
+    }).catch(err => console.error(err));
 });
