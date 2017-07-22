@@ -1,0 +1,10 @@
+{
+    "name": "shopA",
+    "priceUrl": "https://niko-opt.com/price_two.csv",
+    "columns": {
+        "id": "Reference",
+        "name": "Name",
+        "price": "Price/RUB"
+    },
+    "delimiter": ";"
+}
